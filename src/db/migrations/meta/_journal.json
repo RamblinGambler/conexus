@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1785955848279,
+      "tag": "0000_concerned_joseph",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1785977783223,
+      "tag": "0001_third_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786050558779,
+      "tag": "0002_sleepy_justice",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786054418450,
+      "tag": "0003_conscious_colonel_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1787085355168,
+      "tag": "0004_rich_lady_mastermind",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1787160033740,
+      "tag": "0005_wild_radioactive_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1787164070770,
+      "tag": "0006_lean_marrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1787165976695,
+      "tag": "0007_round_iron_patriot",
+      "breakpoints": true
+    }
+  ]
+}
