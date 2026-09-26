@@ -1,5 +1,7 @@
 # Conexus
 
+[![CI](https://github.com/RamblinGambler/conexus/actions/workflows/ci.yml/badge.svg)](https://github.com/RamblinGambler/conexus/actions/workflows/ci.yml)
+
 The AI-native source of truth for how a company plans, builds, and ships software — one work item, viewed at the altitude that matches your role.
 
 ## Stack
@@ -54,3 +56,45 @@ npm run db:generate   # create a migration from schema changes
 npm run db:migrate    # apply pending migrations
 npm run db:studio     # browse the database
 ```
+
+### Checks
+
+```bash
+npm run lint
+npm run typecheck
+npm test              # npm run test:watch to iterate
+```
+
+The suite covers the logic most expensive to get wrong — token encryption, the
+role-based edit gate, pull-request URL extraction from agent output, and the AI
+output schemas. It is deliberately free of network, API and database access, so
+it needs no environment setup. CI runs all three checks plus a production build
+and the migrations against a clean Postgres.
+
+## Engineering record
+
+[`_build_plan/`](_build_plan/) is kept as this project's decision record rather
+than deleted as scaffolding. Alongside the original PRD, each
+[milestone log](_build_plan/milestones/) records what was built, what was
+decided that the PRD did not specify, and where the implementation deliberately
+departed from the plan. Some worth reading on their own:
+
+- [Milestone 5](_build_plan/milestones/5-agent-driven-build-execution/milestone-log.md)
+  — why build execution runs on Anthropic Managed Agents instead of the Claude
+  Agent SDK, and why the build agent is created once by a script rather than per
+  request.
+- [Milestone 9](_build_plan/milestones/9-unattended-execution/milestone-log.md)
+  — why one idempotent queue tick is driven by three different callers.
+- [Milestone 10](_build_plan/milestones/10-review-and-iterate/milestone-log.md)
+  — why a rebuild is just another build run, and why that meant no
+  pull-request table was needed.
+
+**On the commit history:** this project was built in the ten milestones above,
+but its history was originally committed as a single squashed commit. On
+2026-09-26 that commit was rebuilt into one commit per milestone, partitioning
+the tree by the milestone that introduced each file, with dates taken from the
+milestone logs. It is an accurate map of what each milestone delivered, but it
+is a reconstruction rather than a recording: files created and later deleted do
+not appear, files that evolved across several milestones show only their final
+content, and intermediate commits are not guaranteed to build. The milestone
+logs, not the commit history, are the primary record.
