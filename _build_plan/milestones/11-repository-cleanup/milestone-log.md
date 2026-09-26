@@ -52,7 +52,13 @@ Dates span 2026-08-05 to 2026-08-19. Seven of the ten are the real mtime of that
 
 7. **CI migrates before building.** `next build` needs `DATABASE_URL` set because of the import-time throw. Given a database is needed anyway, running the migrations first costs one step and proves all eight still apply to an empty database. Both were verified locally against a clean database before the workflow was written.
 
-8. **Partition judgement calls.** Three assignments do not follow unambiguously from the logs: `src/app/(auth)/signup/actions.ts` → milestone 2 (milestone 1 built `api/signup`, which milestone 2 removed; the server action most likely replaced it there), `mon.mjs` → milestone 5 (it debugs Managed Agents sessions), and `docs/*-runbook.md` plus `scripts/seed-demo.ts` → milestone 10 (demo material, written last). Any of the three could belong a milestone either side.
+8. **Three things only a fresh clone revealed.** All checks passed in the working tree and would still have failed CI on the first push. Each was found by cloning to a temp directory and running the job end to end, which is why the milestone's "Done when" asked for that rather than a local pass.
+
+   - **`tsc --noEmit` alone fails on a clean checkout.** `PageProps`, `RouteContext` and `LayoutProps` are globals Next generates into `.next/types/`, which `tsconfig.json` includes. Any machine that has run `next dev` or `next build` has them. `typecheck` now runs `next typegen` first, which generates route types without a full build and needs no environment.
+   - **`drizzle.config.ts` could not run without `.env.local`.** It called `process.loadEnvFile(".env.local")` unconditionally, and that throws on a missing file rather than ignoring it — so `db:migrate` failed anywhere the variables come from the environment instead of a file, CI included. Now guarded by `existsSync`. This also affects any deployment that injects environment variables, not just CI.
+   - **`next build` needs a *migrated* database, not just a reachable one.** Prerendering `/signup` calls `isFirstRun()`, which runs `select count(*) from "user"`. The first local build succeeded only because the development database was already migrated. CI's migrate-before-build ordering is therefore load-bearing, not a nicety.
+
+9. **Partition judgement calls.** Three assignments do not follow unambiguously from the logs: `src/app/(auth)/signup/actions.ts` → milestone 2 (milestone 1 built `api/signup`, which milestone 2 removed; the server action most likely replaced it there), `mon.mjs` → milestone 5 (it debugs Managed Agents sessions), and `docs/*-runbook.md` plus `scripts/seed-demo.ts` → milestone 10 (demo material, written last). Any of the three could belong a milestone either side.
 
 ## Deviations from the PRD
 
