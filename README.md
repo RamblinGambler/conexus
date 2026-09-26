@@ -61,7 +61,7 @@ npm run db:studio     # browse the database
 
 ```bash
 npm run lint
-npm run typecheck
+npm run typecheck     # runs next typegen first; works on a clean checkout
 npm test              # npm run test:watch to iterate
 ```
 
