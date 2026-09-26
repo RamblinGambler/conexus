@@ -5,6 +5,7 @@ import { db } from "@/db"
 import { repositories } from "@/db/schema"
 import { productSection, type ProductBrief } from "@/lib/ai/prompts"
 import { GITHUB_MCP_URL } from "@/lib/build/agent-config"
+import { extractPullRequestUrl } from "@/lib/build/pr-url"
 import { decryptSecret } from "@/lib/crypto"
 
 export type BuildContext = {
@@ -43,9 +44,6 @@ export type BuildSync = {
 }
 
 export const buildIsStubbed = !process.env.ANTHROPIC_API_KEY
-
-const PR_URL_PATTERN =
-  /https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+/
 
 function briefFor(ctx: BuildContext) {
   const line = (label: string, value: string | null | undefined) =>
@@ -263,8 +261,8 @@ export async function syncBuild(sessionId: string | null): Promise<BuildSync> {
 
   for await (const event of client.beta.sessions.events.list(sessionId)) {
     const text = JSON.stringify(event)
-    const match = PR_URL_PATTERN.exec(text)
-    if (match && !pullRequestUrl) pullRequestUrl = match[0]
+    const match = extractPullRequestUrl(text)
+    if (match && !pullRequestUrl) pullRequestUrl = match
 
     if (event.type === "agent.message") {
       const blocks = (event as { content?: { type: string; text?: string }[] })
