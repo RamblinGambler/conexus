@@ -1,6 +1,6 @@
 # Conexus
 
-> **About these build-plan files:** Everything in `_build_plan/` (this PRD and the per-milestone folders) is a **temporary documentation and guidance artifact** for the initial build-out of this codebase. These files are not functional — no code, configuration, runtime logic, tests, or deployment process should import, read, reference, or depend on anything in `_build_plan/`. Once the initial milestones are built and shipped, the entire `_build_plan/` folder is expected to be deleted from the codebase. Do not treat it as long-living documentation.
+> **About these build-plan files:** Everything in `_build_plan/` (this PRD and the per-milestone folders) is the project's **decision record** — what was planned, what was built, and where the implementation departed from the plan and why. It is kept deliberately. These files are not functional: no code, configuration, runtime logic, tests, or deployment process should import, read, reference, or depend on anything in `_build_plan/`. Treat them as a historical record rather than a current specification — each milestone log describes the codebase as it stood when that milestone closed, so where a log and the code disagree, the code is authoritative.
 
 ## What we're building
 
